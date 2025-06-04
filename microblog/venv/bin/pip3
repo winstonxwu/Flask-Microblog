@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/winstonxwu/The Flask/microblog/venv/bin/python3" "$0" "$@"
-' '''
+#!/Users/winstonxwu/Flask-Microblog/microblog/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
