@@ -7,14 +7,8 @@ from flask_login import current_user, login_user, logout_user, login_required
 from urllib.parse import urlsplit
 
 
-@app.route('/') # decorators, basically when the URLs / and /index are requested by the browser, Flask returns this function
-@app.route('/index')
+
 @app.route('/login', methods=['GET', 'POST'])
-@app.route('/logout')
-@app.route('/register', methods=['GET', 'POST'])
-@login_required
-
-
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -31,6 +25,8 @@ def login():
             next_page = url_for('index')
         return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
+@app.route('/') # decorators, basically when the URLs / and /index are requested by the browser, Flask returns this function
+@app.route('/index')
 def index():
     user = {'Username': 'Nestor'}
     posts = [
@@ -44,9 +40,12 @@ def index():
         }
     ]
     return render_template('index.html', title='Home', posts=posts)
+@app.route('/logout')
+
 def logout():
     logout_user()
     return redirect(url_for('index'))
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -59,6 +58,8 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+@app.route('/user/<username>')
+@login_required
 def user(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     posts = [
